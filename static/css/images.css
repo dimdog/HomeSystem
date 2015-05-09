@@ -1,0 +1,22 @@
+.icon {
+  max-width: 50px;
+  max-height: 50px;
+}
+body {
+  background: #004050;
+
+}
+h2{
+  text-align: center;
+}
+.inset {
+  max-width: 20px;
+  max-height: 20px;
+  position: relative;
+  left: -20px;
+}
+.tile {
+  display: inline-block;
+  margin: 0px 10px 10px 0px;
+  background: #238d9a;
+}
