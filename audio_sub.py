@@ -12,9 +12,11 @@ context = zmq.Context()
 socket = context.socket(zmq.SUB)
 
 print "collecting audio data!"
-socket.connect ("tcp://localhost:%s" % port)
+socket.connect ("tcp://10.0.1.8:%s" % port)
 
 p = pyaudio.PyAudio()
+
+p.
 
 stream = p.open(format=p.get_format_from_width(WIDTH),
                 channels=CHANNELS,
