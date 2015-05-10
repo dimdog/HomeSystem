@@ -1,3 +1,4 @@
+import base64
 import pyaudio
 import numpy
 import time
@@ -19,8 +20,7 @@ socket.bind("tcp://*:%s" % port)
 p = pyaudio.PyAudio()
 
 def callback(in_data, frame_count, time_info, status):
-    print "sending:|%s|"%in_data
-    socket.send("%s %s"%(topic, in_data))
+    socket.send("%s"%(in_data))
     return (in_data, pyaudio.paContinue)
 
 stream = p.open(format=p.get_format_from_width(WIDTH),

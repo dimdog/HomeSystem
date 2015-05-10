@@ -16,23 +16,23 @@ socket.connect ("tcp://localhost:%s" % port)
 
 p = pyaudio.PyAudio()
 
-def callback(in_data, frame_count, time_info, status):
-    print "callback!"
-    in_data = socket.recv() 
-    print "received:|%s|"%in_data
-    return (in_data, pyaudio.paContinue)
-
 stream = p.open(format=p.get_format_from_width(WIDTH),
                 channels=CHANNELS,
                 rate=RATE,
                 output_device_index = 1,                
-                output=True,
-                stream_callback=callback)
+                output=True)
 
 stream.start_stream()
 
-while stream.is_active():
-    time.sleep(0.001)
+# read data
+topicfilter = ""
+socket.setsockopt(zmq.SUBSCRIBE, topicfilter)
+data =  socket.recv()
+
+# play stream (3)
+while data != '':
+    stream.write(data)
+    data =  socket.recv()
 
 stream.stop_stream()
 stream.close()
