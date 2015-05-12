@@ -42,14 +42,13 @@ def callback(*args, **kwargs):
 
   return (data, pyaudio.paContinue)
 
-partial_callback = partial(callback, q=q)
 
 stream = p.open(format=p.get_format_from_width(WIDTH),
                 channels=CHANNELS,
                 rate=RATE,
                 output_device_index = 1,                
                 output=True,
-                stream_callback=partial_callback)
+                stream_callback=callback)
 
 
 stream.start_stream()
