@@ -21,7 +21,6 @@ void colorWipe(uint32_t c, uint8_t wait) {
  } 
 }
 
-
 uint32_t Color(byte r, byte g, byte b) {
   uint32_t c;
   c = r;
@@ -31,9 +30,6 @@ uint32_t Color(byte r, byte g, byte b) {
   c |= b;
   return c;
 }
-
-
-
 
 unsigned long readULongFromBytes() {
   union u_tag {
@@ -54,61 +50,47 @@ unsigned long blue[25];
 bool r = false;
 bool g = false;
 bool b = false;
+bool position = false;
 unsigned long counter = 0;
 
 
 void set_value(unsigned long value){
-  if (value==400){
-    r=false;
-    g=false;
-    b=false;
-    strip.setPixelColor(counter, Color(red[counter],green[counter],blue[counter]));
-    strip.show();
-    counter++;
-    if (counter==25){
-      counter=0;
+    if (value==401){
+        position = true;
     }
-  }
-  else if (!r){
-    red[counter] = value;
-    r=true;
-  }
-  else if (!g){
-    green[counter] = value;
-    g=true;
-  }
-  else if (!b){
-    blue[counter] = value;
-  }
-  
+    else if (position==true){
+        counter = value;
+        position = false;
+    }
+    else if (value==400){
+        r=false;
+        g=false;
+        b=false;
+        strip.setPixelColor(counter, Color(red[counter],green[counter],blue[counter]));
+        strip.show();
+        counter++;
+        if (counter==25){
+            counter=0;
+        }
+    }
+    else if (!r){
+        red[counter] = value;
+        r=true;
+    }
+    else if (!g){
+        green[counter] = value;
+        g=true;
+    }
+    else if (!b){
+        blue[counter] = value;
+    }
 }
-
 void loop() {
  if(Serial.available() >= 4) {
-    //red[counter] = readULongFromBytes();
-    //green[counter] = readULongFromBytes();
-    //blue[counter] = readULongFromBytes();
-    //strip.setPixelColor(counter, Color(red[counter],green[counter],blue[counter]));
-    //strip.show();
- 
     set_value(readULongFromBytes());
-   
-    
-    
-		
-	
-                
-   
- 
  }
-  
-
   // put your main code here, to run repeatedly:
  // colorWipe(Color(255,0,0), 50);
  // colorWipe(Color(0,255,0), 50);
  // colorWipe(Color(0,0,255), 50);
-
 }
-
-
-
