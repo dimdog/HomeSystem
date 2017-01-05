@@ -3,7 +3,10 @@ import serial
 
 from flask import Flask, Response, render_template, request
 
-ser = serial.Serial('/dev/ttyACM0', 9600, timeout=.5)
+try:
+    ser = serial.Serial('/dev/ttyACM0', 9600, timeout=.5)
+except:
+    ser = serial.Serial('/dev/ttyACM1', 9600, timeout=.5)
 power_state = True
 
 app = Flask(__name__)
