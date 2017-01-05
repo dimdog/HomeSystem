@@ -1,6 +1,5 @@
 import struct
 import serial
-import time
 
 from flask import Flask, Response, render_template, request
 
@@ -9,13 +8,15 @@ power_state = True
 
 app = Flask(__name__)
 
+strip_length = 25
+
 
 def int_to_bin(value):
     return struct.pack('I', value)
 
 
 def write_to_strip(red, green, blue, position=None):
-    if position == -1:
+    if position == -1 or position >= strip_length:
         position = None
     if position:
         ser.write(int_to_bin(401))
@@ -42,18 +43,14 @@ def api_data():
 
 @app.route('/power')
 def power():
-    ser.close()
-    ser.open()
+    for led in xrange(strip_length):
+        write_to_strip(0, 0, 0, led)
     return Response()
 
 
 @app.route('/')
 def root():
     return render_template('index.html')
-
-write_to_strip(125, 0, 0)
-time.sleep(1)
-write_to_strip(125, 0, 0)
 
 if __name__ == '__main__':
     app.run(port=80, host='0.0.0.0')
